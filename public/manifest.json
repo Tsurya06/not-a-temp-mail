@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Not a Temp Mail",
+  "version": "1.0.0",
+  "description": "Generate and manage temporary email addresses with style",
+  "permissions": [
+    "storage",
+    "clipboardWrite",
+    "notifications"
+  ],
+  "action": {
+    "default_popup": "index.html"
+  }
+}
