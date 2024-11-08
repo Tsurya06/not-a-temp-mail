@@ -15,7 +15,7 @@ Make sure you have the following installed on your machine:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/USERNAME/not-a-temp-mail.git
+   git clone https://github.com/Tsurya06/not-a-temp-mail.git
    cd not-a-temp-mail
    ```
 
