@@ -1,5 +1,5 @@
-import { Inbox } from 'lucide-react';
-import { Message } from '../types';
+import { Inbox } from "lucide-react";
+import { Message } from "../types";
 
 interface MessageListProps {
   messages: Message[];
@@ -7,7 +7,11 @@ interface MessageListProps {
   onMessageSelect: (message: Message) => void;
 }
 
-export function MessageList({ messages, loading, onMessageSelect }: MessageListProps) {
+export function MessageList({
+  messages,
+  loading,
+  onMessageSelect,
+}: MessageListProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-full">
@@ -40,7 +44,9 @@ export function MessageList({ messages, loading, onMessageSelect }: MessageListP
             </span>
           </div>
           <p className="text-sm text-gray-400">{message.from.address}</p>
-          <p className="text-sm text-gray-300 mt-1 line-clamp-2">{message.intro}</p>
+          <p className="text-sm text-gray-300 mt-1 line-clamp-2">
+            {message.intro}
+          </p>
         </div>
       ))}
     </div>

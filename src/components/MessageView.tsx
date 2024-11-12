@@ -1,5 +1,5 @@
-import { X, ExternalLink } from 'lucide-react';
-import { Message } from '../types';
+import { X, ExternalLink } from "lucide-react";
+import { Message } from "../types";
 
 interface MessageViewProps {
   message: Message;
@@ -20,16 +20,13 @@ export function MessageView({ message, onClose }: MessageViewProps) {
               {new Date(message.createdAt).toLocaleString()}
             </p>
           </div>
-          <button
-            onClick={onClose}
-            className="p-1 hover:bg-gray-700 rounded"
-          >
+          <button onClick={onClose} className="p-1 hover:bg-gray-700 rounded">
             <X className="w-5 h-5" />
           </button>
         </div>
-        
+
         <div className="p-4 overflow-y-auto flex-1">
-          <div 
+          <div
             className="prose prose-invert max-w-none"
             dangerouslySetInnerHTML={{ __html: message.html || message.text }}
           />
@@ -38,18 +35,20 @@ export function MessageView({ message, onClose }: MessageViewProps) {
         {message.html?.includes('href="') && (
           <div className="p-4 border-t border-gray-700 bg-gray-850">
             <p className="text-sm text-gray-400 mb-2">Verification Links:</p>
-            {Array.from(message.html.matchAll(/href="([^"]*verify[^"]*)/g)).map((match, i) => (
-              <a
-                key={i}
-                href={match[1]}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block text-blue-400 hover:text-blue-300 mb-1 flex items-center"
-              >
-                <span className="truncate">{match[1]}</span>
-                <ExternalLink className="w-4 h-4 ml-2 flex-shrink-0" />
-              </a>
-            ))}
+            {Array.from(message.html.matchAll(/href="([^"]*verify[^"]*)/g)).map(
+              (match, i) => (
+                <a
+                  key={i}
+                  href={match[1]}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-400 hover:text-blue-300 mb-1 flex items-center"
+                >
+                  <span className="truncate">{match[1]}</span>
+                  <ExternalLink className="w-4 h-4 ml-2 flex-shrink-0" />
+                </a>
+              )
+            )}
           </div>
         )}
       </div>

@@ -12,7 +12,7 @@ export function EmailDisplay({ email, onCopy, copied }: EmailDisplayProps) {
       <span className="text-sm font-mono select-all truncate">{email}</span>
       <button
         onClick={onCopy}
-        className="p-1 hover:bg-gray-600 rounded transition-colors ml-2 flex-shrink-0"
+        className="p-1 hover:bg-gray-600 rounded transition-colors ml-2 flex-shrink-0 text-gray-400"
         title={copied ? 'Copied!' : 'Copy to clipboard'}
       >
         {copied ? (

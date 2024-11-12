@@ -1,9 +1,10 @@
-import { useState } from 'react';
-import { Trash2, QrCode } from 'lucide-react';
-import { EmailDisplay } from './EmailDisplay';
-import { MessageList } from './MessageList';
-import { QRModal } from './QRModal';
-import type { Account, Message } from '../types';
+import { useState } from "react";
+import { Trash2, QrCode } from "lucide-react";
+import { EmailDisplay } from "./EmailDisplay";
+import { MessageList } from "./MessageList";
+import { QRModal } from "./QRModal";
+import type { Account, Message } from "../types";
+import { ConfirmModal } from "./ConfirmModal";
 
 interface EmailTabProps {
   account: Account;
@@ -11,16 +12,29 @@ interface EmailTabProps {
   onMessageSelect: (message: Message) => void;
 }
 
-export function EmailTab({ account, onDelete, onMessageSelect }: EmailTabProps) {
+export function EmailTab({
+  account,
+  onDelete,
+  onMessageSelect,
+}: EmailTabProps) {
   const [copied, setCopied] = useState(false);
   const [showQR, setShowQR] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal
+
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(account.address);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+  const handleDeleteClick = () => {
+    setIsModalOpen(true);
+  };
 
+  const handleConfirmDelete = () => {
+    onDelete();
+    setIsModalOpen(false);
+  };
   return (
     <div className="border-b border-gray-700">
       <div className="flex items-center justify-between p-2 bg-gray-800">
@@ -38,11 +52,11 @@ export function EmailTab({ account, onDelete, onMessageSelect }: EmailTabProps) 
             <QrCode className="w-4 h-4" />
           </button>
           <button
-            onClick={onDelete}
+            onClick={handleDeleteClick}
             className="p-1.5 hover:bg-gray-700 rounded text-red-400 hover:text-red-300"
             title="Delete Email"
           >
-            <Trash2 className="w-4 h-4" />
+            <Trash2 className="w-4 h-4 hover:bg-gray-700 rounded"/>
           </button>
         </div>
       </div>
@@ -52,11 +66,15 @@ export function EmailTab({ account, onDelete, onMessageSelect }: EmailTabProps) 
         onMessageSelect={onMessageSelect}
       />
       {showQR && (
-        <QRModal
-          email={account.address}
-          onClose={() => setShowQR(false)}
-        />
+        <QRModal  email={account.address} onClose={() => setShowQR(false)} />
       )}
+      <ConfirmModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleConfirmDelete}
+        title="Confirm Deletion"
+        message="Are you sure you want to delete this email?"
+      />
     </div>
   );
 }

@@ -46,7 +46,7 @@ export default function App() {
       localStorage.setItem('mailAccounts', JSON.stringify(updatedAccounts));
     };
 
-    const interval = setInterval(checkMessages, 5000);
+    const interval = setInterval(checkMessages, 1000);
     return () => clearInterval(interval);
   }, [accounts]);
 
@@ -63,7 +63,6 @@ export default function App() {
       setAccounts(updatedAccounts);
       localStorage.setItem('mailAccounts', JSON.stringify(updatedAccounts));
     } catch (error) {
-      console.error('Error generating email:', error);
       alert('Failed to generate email. Please check your network connection and try again.');
     } finally {
       setLoading(false);
