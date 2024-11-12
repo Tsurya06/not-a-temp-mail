@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-import { Plus } from 'lucide-react';
-import { getMessages, createAccount, getMessage } from './api';
-import { EmailTab } from './components/EmailTab';
-import { Header } from './components/Header';
-import { MessageView } from './components/MessageView';
-import { Account, Message } from './types';
+import { useEffect, useState } from "react";
+import { Plus } from "lucide-react";
+import { getMessages, createAccount, getMessage } from "./api";
+import { EmailTab } from "./components/EmailTab";
+import { Header } from "./components/Header";
+import { MessageView } from "./components/MessageView";
+import { Account, Message } from "./types";
 
 export default function App() {
   const [accounts, setAccounts] = useState<Account[]>([]);
@@ -13,64 +13,93 @@ export default function App() {
 
   useEffect(() => {
     const loadAccounts = async () => {
-      const savedAccounts = localStorage.getItem('mailAccounts');
+      const savedAccounts = localStorage.getItem("mailAccounts");
       if (savedAccounts) {
-        setAccounts(JSON.parse(savedAccounts) as Account[]);
+        try {
+          const accounts: Account[] = JSON.parse(savedAccounts);
+          setAccounts(accounts);
+        } catch (error) {
+          console.error("Failed to parse accounts from localStorage:", error);
+        }
       }
     };
     loadAccounts();
   }, []);
 
   useEffect(() => {
-    const checkMessages = async () => {
-      const updatedAccounts = await Promise.all(
-        accounts.map(async (account) => {
-          const now = Date.now();
-          if (!account.lastChecked || now - account.lastChecked >= 5000) {
-            try {
-              const newMessages = await getMessages(account.token);
-              return {
-                ...account,
-                messages: newMessages,
-                lastChecked: now,
-              };
-            } catch (error) {
-              console.error('Error fetching messages:', error);
-            }
-          }
-          return account;
-        })
-      );
+    // Function to fetch new messages for a given account
+    const fetchNewMessagesForAccount = async (account: Account) => {
+      const now = Date.now();
 
-      setAccounts(updatedAccounts);
-      localStorage.setItem('mailAccounts', JSON.stringify(updatedAccounts));
+      // Check if the account needs to be checked for new messages
+      if (!account.lastChecked || now - account.lastChecked >= 5000) {
+        try {
+          const newMessages = await getMessages(account.token);
+          return {
+            ...account,
+            messages: newMessages,
+            lastChecked: now,
+          };
+        } catch (error) {
+          console.error(
+            "Error fetching messages for account:",
+            account.address,
+            error
+          );
+        }
+      }
+
+      // Return the account unchanged if no new messages were fetched
+      return account;
     };
 
-    const interval = setInterval(checkMessages, 1000);
+    // Main function to check messages for all accounts
+    const checkMessages = async () => {
+      const updatedAccounts = await Promise.all(
+        accounts.map(fetchNewMessagesForAccount)
+      );
+
+      // Update state and local storage with the new accounts data
+      setAccounts(updatedAccounts);
+      localStorage.setItem("mailAccounts", JSON.stringify(updatedAccounts));
+    };
+
+    // Set an interval to check messages every 5 second
+    const interval = setInterval(checkMessages, 5000);
+
+    // Cleanup function to clear the interval on component unmount
     return () => clearInterval(interval);
   }, [accounts]);
 
   const generateEmail = async () => {
     setLoading(true);
     try {
-      const newAccount = await createAccount();
-      const accountWithMessages = {
+      const newAccount: { address: string; token: string } =
+        await createAccount();
+      const accountWithMessages: Account = {
         ...newAccount,
         messages: [],
         lastChecked: Date.now(),
       };
-      const updatedAccounts: any = [...accounts, accountWithMessages];
-      setAccounts(updatedAccounts);
-      localStorage.setItem('mailAccounts', JSON.stringify(updatedAccounts));
+      setAccounts((prevAccounts) => {
+        const updatedAccounts = [...prevAccounts, accountWithMessages];
+        localStorage.setItem("mailAccounts", JSON.stringify(updatedAccounts));
+        return updatedAccounts;
+      });
     } catch (error) {
-      alert('Failed to generate email. Please check your network connection and try again.');
+      console.error("Error generating email:", error);
+      alert(
+        "Failed to generate email. Please check your network connection and try again."
+      );
     } finally {
       setLoading(false);
     }
   };
 
   const handleMessageSelect = async (message: Message) => {
-    const account = accounts.find(a => a.messages.some(m => m.id === message.id));
+    const account = accounts.find((a) =>
+      a.messages.some((m) => m.id === message.id)
+    );
     if (account) {
       const fullMessage = await getMessage(message.id, account.token);
       setSelectedMessage(fullMessage);
@@ -78,9 +107,9 @@ export default function App() {
   };
 
   const deleteAccount = (address: string) => {
-    const updatedAccounts = accounts.filter(a => a.address !== address);
+    const updatedAccounts = accounts.filter((a) => a.address !== address);
     setAccounts(updatedAccounts);
-    localStorage.setItem('mailAccounts', JSON.stringify(updatedAccounts));
+    localStorage.setItem("mailAccounts", JSON.stringify(updatedAccounts));
   };
 
   return (
@@ -88,7 +117,9 @@ export default function App() {
       <Header onGenerateEmail={() => generateEmail()} loading={loading} />
 
       <div className="flex items-center justify-between px-4 py-2 bg-gray-800 border-b border-gray-700">
-        <span className="text-sm text-gray-400">Active Emails: {accounts.length}</span>
+        <span className="text-sm text-gray-400">
+          Active Emails: {accounts.length}
+        </span>
         <button
           onClick={generateEmail}
           disabled={loading}
@@ -116,7 +147,6 @@ export default function App() {
           onClose={() => setSelectedMessage(null)}
         />
       )}
-
     </div>
   );
 }

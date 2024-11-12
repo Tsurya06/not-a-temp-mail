@@ -15,7 +15,10 @@ export function QRModal({ email, onClose }: QRModalProps) {
       <div className="bg-gray-800 rounded-lg p-6">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-semibold">QR Code</h3>
-          <button onClick={onClose} className="p-1 hover:bg-gray-700 rounded">
+          <button
+            onClick={onClose}
+            className="p-1 hover:bg-gray-700 rounded-sm text-red-400 hover:text-white"
+          >
             <X className="w-5 h-5" />
           </button>
         </div>

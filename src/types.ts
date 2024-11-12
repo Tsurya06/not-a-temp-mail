@@ -17,7 +17,7 @@ export type Message = {
 }
 
 export type Account = {
-  id: string;
+  id?: string;
   address: string;
   token: string;
   lastChecked?: number;
