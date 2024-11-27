@@ -24,7 +24,9 @@ export function MessageList({
     return (
       <div className="flex flex-col items-center justify-center h-full text-gray-500">
         <Inbox className="w-12 h-12 mb-2" />
-        <p>No messages yet</p>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+        <h2>Your inbox is empty</h2>
+        <p>Waiting for incoming emails</p>
       </div>
     );
   }
@@ -49,6 +51,9 @@ export function MessageList({
           </p>
         </div>
       ))}
+      <div className="flex flex-col items-center justify-center h-full text-gray-500">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+      </div>
     </div>
   );
 }

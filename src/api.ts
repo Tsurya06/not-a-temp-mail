@@ -35,6 +35,9 @@ async function getActiveDomains(): Promise<string[]> {
   const response = await fetch(`${API_URL}/domains`);
   const data = await response.json();
   const domains = Object.values(data['hydra:member']).map((domain: any) => domain.domain);
+  if(domains.includes('undefined')) {
+    getActiveDomains();
+  }
   return domains;
 }
 
