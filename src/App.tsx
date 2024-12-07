@@ -64,8 +64,8 @@ export default function App() {
       localStorage.setItem("mailAccounts", JSON.stringify(updatedAccounts));
     };
 
-    // Set an interval to check messages every 5 second
-    const interval = setInterval(checkMessages, 5000);
+    // Set an interval to check messages every 2 second
+    const interval = setInterval(checkMessages, 2000);
 
     // Cleanup function to clear the interval on component unmount
     return () => clearInterval(interval);
@@ -134,7 +134,7 @@ export default function App() {
         {accounts.map((account) => (
           <EmailTab
             key={account.address}
-            account={account}
+            account={account} 
             onDelete={() => deleteAccount(account.address)}
             onMessageSelect={handleMessageSelect}
           />
