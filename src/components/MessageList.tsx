@@ -20,7 +20,7 @@ export function MessageList({
     );
   }
 
-  if (messages.length === 0) {
+  if (messages?.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-full text-gray-500">
         <Inbox className="w-12 h-12 mb-2" />
@@ -33,7 +33,7 @@ export function MessageList({
 
   return (
     <div className="divide-y divide-gray-700">
-      {messages.map((message) => (
+      {messages?.map((message) => (
         <div
           key={message.id}
           className="p-4 hover:bg-gray-800 cursor-pointer transition-colors"

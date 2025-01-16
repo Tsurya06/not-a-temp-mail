@@ -10,10 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "axios": "^1.7.9",
     "lucide-react": "^0.456.0",
     "not-a-temp-mail": "file:",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-toastify": "^11.0.3",
     "tailwindcss": "^3.4.14"
   },
   "devDependencies": {

@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
-import { getMessages, createAccount, getMessage } from "./api";
+import { getMessages, createAccount, getMessage } from "./api/api";
 import { EmailTab } from "./components/EmailTab";
 import { Header } from "./components/Header";
 import { MessageView } from "./components/MessageView";
 import { Account, Message } from "./types";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function App() {
   const [accounts, setAccounts] = useState<Account[]>([]);
@@ -19,7 +21,7 @@ export default function App() {
           const accounts: Account[] = JSON.parse(savedAccounts);
           setAccounts(accounts);
         } catch (error) {
-          console.error("Failed to parse accounts from localStorage:", error);
+          throw error;
         }
       }
     };
@@ -41,11 +43,7 @@ export default function App() {
             lastChecked: now,
           };
         } catch (error) {
-          console.error(
-            "Error fetching messages for account:",
-            account.address,
-            error
-          );
+          throw error;
         }
       }
 
@@ -65,7 +63,7 @@ export default function App() {
     };
 
     // Set an interval to check messages every 2 second
-    const interval = setInterval(checkMessages, 2000);
+    const interval = setInterval(checkMessages, 7000);
 
     // Cleanup function to clear the interval on component unmount
     return () => clearInterval(interval);
@@ -74,23 +72,21 @@ export default function App() {
   const generateEmail = async () => {
     setLoading(true);
     try {
-      const newAccount: { address: string; token: string } =
-        await createAccount();
-      const accountWithMessages: Account = {
-        ...newAccount,
-        messages: [],
-        lastChecked: Date.now(),
-      };
+      const newAccount: { id: string; address: string; token: string } = await createAccount();
+
+      const accountWithMessages: Account = {...newAccount,messages: [],lastChecked: Date.now()};
+
       setAccounts((prevAccounts) => {
         const updatedAccounts = [...prevAccounts, accountWithMessages];
         localStorage.setItem("mailAccounts", JSON.stringify(updatedAccounts));
         return updatedAccounts;
       });
+
     } catch (error) {
-      console.error("Error generating email:", error);
-      alert(
-        "Failed to generate email. Please check your network connection and try again."
-      );
+      const handleError = () => {
+        toast.error("Failed to generate email. Please check your network connection and try again.");
+      };
+      handleError();
     } finally {
       setLoading(false);
     }
@@ -106,13 +102,33 @@ export default function App() {
     }
   };
 
-  const deleteAccount = (address: string) => {
-    const updatedAccounts = accounts.filter((a) => a.address !== address);
-    setAccounts(updatedAccounts);
-    localStorage.setItem("mailAccounts", JSON.stringify(updatedAccounts));
-  };
+
+const deleteAccount = async (addressId: string) => {
+  try {
+    // Make the DELETE request
+    const response = await axios.delete(`https://api.mail.tm/accounts/${addressId}`, {
+      headers: {
+        'accept': '*/*',
+        'Authorization': `Bearer ${accounts.find((a) => a.id === addressId)?.token}`
+      }
+    });
+
+    // Check if the deletion was successful
+    if (response.status === 204) {
+      // Update the local state and localStorage
+      const updatedAccounts = accounts.filter((a) => a.id !== addressId);
+      setAccounts(updatedAccounts);
+      localStorage.setItem("mailAccounts", JSON.stringify(updatedAccounts));
+    } else {
+      console.error('Failed to delete account:', response.status, response.statusText);
+    }
+  } catch (error) {
+    console.error('Error deleting account:', error);
+  }
+};
 
   return (
+    <><ToastContainer />
     <div className="w-[400px] h-[500px] bg-gray-900 text-gray-100 flex flex-col border-2 border-gray-800 rounded-m">
       <Header onGenerateEmail={() => generateEmail()} loading={loading} />
 
@@ -135,7 +151,7 @@ export default function App() {
           <EmailTab
             key={account.address}
             account={account} 
-            onDelete={() => deleteAccount(account.address)}
+            onDelete={() => deleteAccount(account?.id || '')}
             onMessageSelect={handleMessageSelect}
           />
         ))}
@@ -148,5 +164,6 @@ export default function App() {
         />
       )}
     </div>
+    </>
   );
 }
