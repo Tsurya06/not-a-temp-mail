@@ -7,5 +7,8 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: true,
-  }
+  },
+  define: {
+    'import.meta.env.VITE_BASE_URL': JSON.stringify(import.meta.env.VITE_BASE_URL),
+  },
 })
