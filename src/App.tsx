@@ -4,7 +4,7 @@ import { getMessages, createAccount, getMessage } from "./api/api";
 import { EmailTab } from "./components/EmailTab";
 import { Header } from "./components/Header";
 import { MessageView } from "./components/MessageView";
-import { Account, Message } from "./types";
+import { Account, Message } from "./types/types";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 
@@ -106,7 +106,7 @@ export default function App() {
 const deleteAccount = async (addressId: string) => {
   try {
     // Make the DELETE request
-    const response = await axios.delete(`https://api.mail.tm/accounts/${addressId}`, {
+    const response = await axios.delete(`https://api.mail.gw/accounts/${addressId}`, {
       headers: {
         'accept': '*/*',
         'Authorization': `Bearer ${accounts.find((a) => a.id === addressId)?.token}`

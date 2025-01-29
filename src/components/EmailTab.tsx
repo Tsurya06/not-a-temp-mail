@@ -3,7 +3,7 @@ import { Trash2, QrCode } from "lucide-react";
 import { EmailDisplay } from "./EmailDisplay";
 import { MessageList } from "./MessageList";
 import { QRModal } from "./QRModal";
-import type { Account, Message } from "../types";
+import type { Account, Message } from "../types/types";
 import { ConfirmModal } from "./ConfirmModal";
 
 interface EmailTabProps {
