@@ -7,6 +7,7 @@ import { MessageView } from "./components/MessageView";
 import { Account, Message } from "./types/types";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
+const devURL = import.meta.env.VITE_BASE_URL;
 
 export default function App() {
   const [accounts, setAccounts] = useState<Account[]>([]);
@@ -106,7 +107,7 @@ export default function App() {
 const deleteAccount = async (addressId: string) => {
   try {
     // Make the DELETE request
-    const response = await axios.delete(`https://api.mail.gw/accounts/${addressId}`, {
+    const response = await axios.delete(`${devURL}/accounts/${addressId}`, {
       headers: {
         'accept': '*/*',
         'Authorization': `Bearer ${accounts.find((a) => a.id === addressId)?.token}`
