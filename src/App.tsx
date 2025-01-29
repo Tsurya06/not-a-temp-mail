@@ -10,6 +10,7 @@ import { toast, ToastContainer } from "react-toastify";
 const devURL = import.meta.env.VITE_BASE_URL;
 
 export default function App() {
+  console.log(devURL);
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);

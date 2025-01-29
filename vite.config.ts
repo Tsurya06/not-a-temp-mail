@@ -9,12 +9,13 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     rollupOptions: {
-      output: {
-        manualChunks: undefined,
-      },
+      // Remove manualChunks if not needed
+      // output: {
+      //   manualChunks: undefined,
+      // },
     },
   },
   define: {
-    'process.env.VITE_API_BASE_URL': JSON.stringify(process.env.VITE_API_BASE_URL),
+    'process.env.VITE_BASE_URL': JSON.stringify(process.env.VITE_BASE_URL),
   },
 })
