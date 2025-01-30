@@ -3,34 +3,31 @@ import { Trash2, QrCode } from "lucide-react";
 import { EmailDisplay } from "./EmailDisplay";
 import { MessageList } from "./MessageList";
 import { QRModal } from "./QRModal";
-import type { Account, Message } from "../types/types";
+import type { Email, Message } from "../store/types";
 import { ConfirmModal } from "./ConfirmModal";
 
 interface EmailTabProps {
-  account: Account;
+  email: Email;
   onDelete: () => void;
   onMessageSelect: (message: Message) => void;
 }
 
 export function EmailTab({
-  account,
+  email,
   onDelete,
   onMessageSelect,
 }: EmailTabProps) {
   const [copied, setCopied] = useState(false);
   const [showQR, setShowQR] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal
-
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(account.address);
+    navigator.clipboard.writeText(email.address);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
   const handleDeleteClick = () => {
     setIsModalOpen(true);
   };
-
   const handleConfirmDelete = () => {
     onDelete();
     setIsModalOpen(false);
@@ -39,7 +36,7 @@ export function EmailTab({
     <div className="border-b border-gray-700">
       <div className="flex items-center justify-between p-2 bg-gray-800">
         <EmailDisplay
-          email={account.address}
+          email={email.address}
           onCopy={copyToClipboard}
           copied={copied}
         />
@@ -61,12 +58,12 @@ export function EmailTab({
         </div>
       </div>
       <MessageList
-        messages={account.messages}
+        messages={email.messages || null}
         loading={false}
-        onMessageSelect={onMessageSelect}
+        onMessageSelect={(message) => onMessageSelect(message)}
       />
       {showQR && (
-        <QRModal  email={account.address} onClose={() => setShowQR(false)} />
+        <QRModal  email={email.address} onClose={() => setShowQR(false)} />
       )}
       <ConfirmModal
         isOpen={isModalOpen}

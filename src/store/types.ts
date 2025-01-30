@@ -14,6 +14,8 @@ export type Message = {
   html?: string;
   createdAt: string;
   hasAttachments: boolean;
+  address: string;
+  token: string;
 }
 
 export type Account = {
@@ -30,4 +32,28 @@ export type ConfirmModalProps = {
   onConfirm: () => void;
   title: string;
   message: string;
+}
+
+export interface Email {
+  id: string;
+  from: string;
+  to: string;
+  subject: string;
+  body: string;
+  createdAt: string;
+  address: string;
+  token: string;
+  messages?: Message[];
+}
+
+export interface EmailState {
+  emails: Email[];
+  loading: boolean;
+  error: string | null;
+  currentEmail: Email | null;
+}
+
+export interface RootState {
+  email: EmailState;
+  // Add other state slices here
 }

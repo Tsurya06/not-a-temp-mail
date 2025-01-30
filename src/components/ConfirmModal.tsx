@@ -1,5 +1,5 @@
 import { AlertTriangle } from "lucide-react";
-import type { ConfirmModalProps } from "../types/types";
+import type { ConfirmModalProps } from "../store/types";
 
 export function ConfirmModal({
   isOpen,

@@ -1,5 +1,5 @@
 import { X, ExternalLink } from "lucide-react";
-import { Message } from "../types/types";
+import { Message } from "../store/types";
 
 interface MessageViewProps {
   message: Message;
@@ -21,7 +21,7 @@ export function MessageView({ message, onClose }: MessageViewProps) {
             </p>
           </div>
           <button onClick={onClose} className="p-1 hover:bg-gray-700 rounded">
-            <X className="w-5 h-5" />
+            <X className="w-5 h-5 text-red-400" />
           </button>
         </div>
 
@@ -30,6 +30,7 @@ export function MessageView({ message, onClose }: MessageViewProps) {
             className="prose prose-invert max-w-none"
             dangerouslySetInnerHTML={{ __html: message.html || message.text }}
           />
+          <p className="text-sm text-gray-300 mt-2">{message.intro}</p>
         </div>
 
         {message.html?.includes('href="') && (
