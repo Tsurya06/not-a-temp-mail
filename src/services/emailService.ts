@@ -1,5 +1,5 @@
 import { api } from '../api/axios.config';
-import { DomainResponse, Email, MessageResponse } from '../types/email';
+import { DomainResponse, Email, Message, MessageResponse } from '../types/email';
 
 export const emailService = {
   getEmails: (token: string) => api.get<MessageResponse[]>('/messages',{
@@ -28,10 +28,6 @@ export const emailService = {
         id: response.data.id,
         address: response.data.address,
         token: tokenResponse.data.token,
-        // from: '',
-        // to: '',
-        // subject: '',
-        // body: '',
         createdAt: new Date().toISOString()
       };
     } catch (error) {
@@ -44,7 +40,7 @@ export const emailService = {
       Authorization: `Bearer ${token}`,
     },
   }),
-  getEmail: (id: string, token: string) => api.get<Email>(`/messages/${id}`, {
+  getEmail: (id: string, token: string) => api.get<Message>(`/messages/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

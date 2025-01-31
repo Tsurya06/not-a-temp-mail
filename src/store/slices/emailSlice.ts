@@ -43,13 +43,14 @@ const emailSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     },
-    // setCurrentEmail: (state, action: PayloadAction<Email>) => {
-    //   state.currentEmail = action.payload;
-    // },
-    // clearCurrentEmail: (state) => {
-    //   state.currentEmail = null;
-    // },
+    setCurrentEmail: (state, action: PayloadAction<Email>) => {
+      state.currentEmail = action.payload;
+    },
+    clearCurrentEmail: (state) => {
+      state.currentEmail = null;
+    },
     addEmail: (state, action: PayloadAction<Email>) => {
+        console.log("action.payload",action.payload);
       state.emails.unshift(action.payload);
     },
     deleteEmail: (state, action: PayloadAction<string>) => {
@@ -62,8 +63,8 @@ export const {
   setEmails,
   setLoading,
   setError,
-//   setCurrentEmail,
-//   clearCurrentEmail,
+  setCurrentEmail,
+  clearCurrentEmail,
   addEmail,
   deleteEmail,
 } = emailSlice.actions;

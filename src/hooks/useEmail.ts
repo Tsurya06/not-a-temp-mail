@@ -3,6 +3,7 @@ import { emailService } from '../services/emailService';
 
 import { addEmail, deleteEmail, setEmails, setError, setLoading } from '../store/slices/emailSlice';
 import { useAppDispatch, useAppSelector } from '../store/store';
+import { Email } from '../types/email';
 
 export const useEmail = () => {
   const dispatch = useAppDispatch();
@@ -50,17 +51,13 @@ export const useEmail = () => {
       const response = await emailService.createEmail(address, password);
 
       // Ensure we have all required fields before dispatching
-      const emailData = {
+      const emailData : Email= {
         id: response.id,
         address: address,
         token: response.token,
-        from: '',
-        to: '',
-        subject: '',
-        body: '',
         createdAt: new Date().toISOString()
       };
-
+      console.log(emailData);
       dispatch(addEmail(emailData));
       return emailData;
     } catch (error) {
