@@ -28,10 +28,10 @@ export const emailService = {
         id: response.data.id,
         address: response.data.address,
         token: tokenResponse.data.token,
-        from: '',
-        to: '',
-        subject: '',
-        body: '',
+        // from: '',
+        // to: '',
+        // subject: '',
+        // body: '',
         createdAt: new Date().toISOString()
       };
     } catch (error) {

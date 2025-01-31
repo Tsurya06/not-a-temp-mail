@@ -7,6 +7,8 @@ import { toast, ToastContainer } from "react-toastify";
 import { useEmail } from "./hooks/useEmail";
 import { Message } from "./types/email";
 
+const STORAGE_KEY = import.meta.env.STORAGE_KEY;
+
 export default function App() {
   const { emails, loading, fetchEmails, createEmail, removeEmail } = useEmail();
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
@@ -52,6 +54,10 @@ export default function App() {
       toast.error("Failed to delete email account.");
     }
   };
+  const forceDelete = () => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
+    toast.success("Local storage cleared successfully!");
+  };
 
   return (
     <><ToastContainer />
@@ -69,6 +75,13 @@ export default function App() {
           title="Add New Email"
         >
           <Plus className="w-4 h-4" />
+        </button>
+        <button
+          onClick={forceDelete}
+          className="p-1.5 bg-red-500 hover:bg-red-600 rounded-md"
+          title="Force Delete"
+        >
+          Force Delete
         </button>
       </div>
 

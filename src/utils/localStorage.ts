@@ -1,6 +1,6 @@
 import { Email } from '../types/email';
 
-const STORAGE_KEY = import.meta.env.STORAGE_KEY;
+const STORAGE_KEY = import.meta.env.VITE_STORAGE_KEY;
 export interface LocalStorageState {
   emails: Email[];
 }
@@ -20,6 +20,7 @@ export const loadState = (): LocalStorageState | undefined => {
 export const saveState = (state: LocalStorageState) => {
   try {
     const serializedState = JSON.stringify(state);
+    console.log('Saving state to localStorage', serializedState,STORAGE_KEY);
     localStorage.setItem(STORAGE_KEY, serializedState);
   } catch (err) {
     // Ignore write errors
