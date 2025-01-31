@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { emailService } from '../services/email.service';
+import { emailService } from '../services/emailService';
 
 import { addEmail, deleteEmail, setEmails, setError, setLoading } from '../store/slices/emailSlice';
 import { useAppDispatch, useAppSelector } from '../store/store';
