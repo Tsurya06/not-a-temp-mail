@@ -7,7 +7,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { useEmail } from "./hooks/useEmail";
 import { Message } from "./types/email";
 
-const STORAGE_KEY = import.meta.env.STORAGE_KEY;
+const STORAGE_KEY = import.meta.env.VITE_STORAGE_KEY;
 
 export default function App() {
   const { emails, loading, fetchEmails, createEmail, removeEmail } = useEmail();
