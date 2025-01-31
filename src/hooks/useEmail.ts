@@ -1,16 +1,15 @@
 import { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { emailService } from '../services/email.service';
 
-import type { RootState, Email } from '../store/types';
 import { addEmail, deleteEmail, setEmails, setError, setLoading } from '../store/slices/emailSlice';
+import { useAppDispatch, useAppSelector } from '../store/store';
 
 export const useEmail = () => {
-  const dispatch = useDispatch();
-const emails = useSelector((state: RootState) => state.email.emails);
-  const loading = useSelector((state: RootState) => state.email.loading);
-  const error = useSelector((state: RootState) => state.email.error);
-  const currentEmail = useSelector((state: RootState) => state.email.currentEmail);
+  const dispatch = useAppDispatch();
+  const emails = useAppSelector((state) => state.email.emails);
+  const loading = useAppSelector((state) => state.email.loading);
+  const error = useAppSelector((state) => state.email.error);
+  const currentEmail = useAppSelector((state) => state.email.currentEmail);
 
   const fetchEmails = useCallback(async (emailId: string, token: string) => {
     if (!token) return;
@@ -26,7 +25,7 @@ const emails = useSelector((state: RootState) => state.email.emails);
         dispatch(setError(error.message));
       }
     }
-  }, [dispatch]);
+  }, []);
 
   const createEmail = useCallback(async () => {
     try {
@@ -51,7 +50,7 @@ const emails = useSelector((state: RootState) => state.email.emails);
       const response = await emailService.createEmail(address, password);
 
       // Ensure we have all required fields before dispatching
-      const emailData: Email = {
+      const emailData = {
         id: response.id,
         address: address,
         token: response.token,
@@ -71,7 +70,7 @@ const emails = useSelector((state: RootState) => state.email.emails);
     } finally {
       dispatch(setLoading(false));
     }
-  }, [dispatch]);
+  }, []);
 
   const removeEmail = useCallback(async (id: string, token: string) => {
     try {
@@ -85,7 +84,7 @@ const emails = useSelector((state: RootState) => state.email.emails);
       dispatch(setError(errorMessage));
       throw error;
     }
-  }, [dispatch]);
+  }, []);
 
   const getMessage = useCallback(async (messageId: string, token: string) => {
     try {
@@ -99,7 +98,7 @@ const emails = useSelector((state: RootState) => state.email.emails);
       dispatch(setError(errorMessage));
       throw error;
     }
-  }, [dispatch]);
+  }, []);
 
   return {
     emails,

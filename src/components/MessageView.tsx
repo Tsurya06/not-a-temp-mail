@@ -1,5 +1,5 @@
 import { X, ExternalLink } from "lucide-react";
-import { Message } from "../store/types";
+import { Message } from "../types/email";
 
 interface MessageViewProps {
   message: Message;

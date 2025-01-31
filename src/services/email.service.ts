@@ -1,7 +1,5 @@
 import { api } from '../api/axios.config';
-import type { Email } from '../store/types';
-import type { DomainResponse } from '../types/domain';
-import { MessageResponse } from '../types/email';
+import { DomainResponse, Email, MessageResponse } from '../types/email';
 
 export const emailService = {
   getEmails: (token: string) => api.get<MessageResponse[]>('/messages',{

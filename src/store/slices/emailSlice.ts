@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { Email, Message } from '../types';
+// import { Email } from '../types';
+import { Email, Message } from '../../types/email';
 
 interface EmailState {
   emails: Email[];

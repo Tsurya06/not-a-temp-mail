@@ -1,6 +1,5 @@
 import { Inbox } from "lucide-react";
-import {  MessageResponse } from "../types/email";
-import { Message } from "../store/types";
+import {  Message, MessageResponse } from "../types/email";
 
 
 interface MessageListProps {

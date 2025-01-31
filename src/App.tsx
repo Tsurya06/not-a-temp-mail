@@ -3,9 +3,9 @@ import { Plus } from "lucide-react";
 import { EmailTab } from "./components/EmailTab";
 import { Header } from "./components/Header";
 import { MessageView } from "./components/MessageView";
-import { Message } from "./store/types";
 import { toast, ToastContainer } from "react-toastify";
 import { useEmail } from "./hooks/useEmail";
+import { Message } from "./types/email";
 
 export default function App() {
   const { emails, loading, fetchEmails, createEmail, removeEmail } = useEmail();

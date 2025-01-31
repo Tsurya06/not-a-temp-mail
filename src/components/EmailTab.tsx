@@ -3,8 +3,9 @@ import { Trash2, QrCode } from "lucide-react";
 import { EmailDisplay } from "./EmailDisplay";
 import { MessageList } from "./MessageList";
 import { QRModal } from "./QRModal";
-import type { Email, Message } from "../store/types";
+// import type { Email, Message } from "../store/types";
 import { ConfirmModal } from "./ConfirmModal";
+import { Email, Message } from "../types/email";
 
 interface EmailTabProps {
   email: Email;
@@ -21,7 +22,7 @@ export function EmailTab({
   const [showQR, setShowQR] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(email.address);
+    navigator.clipboard.writeText(email?.address || '');
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -36,7 +37,7 @@ export function EmailTab({
     <div className="border-b border-gray-700">
       <div className="flex items-center justify-between p-2 bg-gray-800">
         <EmailDisplay
-          email={email.address}
+          email={email.address || ""}
           onCopy={copyToClipboard}
           copied={copied}
         />
@@ -63,7 +64,7 @@ export function EmailTab({
         onMessageSelect={(message) => onMessageSelect(message)}
       />
       {showQR && (
-        <QRModal  email={email.address} onClose={() => setShowQR(false)} />
+        <QRModal  email={email.address || ""} onClose={() => setShowQR(false)} />
       )}
       <ConfirmModal
         isOpen={isModalOpen}

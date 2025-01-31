@@ -1,5 +1,5 @@
-// api/config/axios.config.ts
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -23,6 +23,7 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       // Handle unauthorized
+      toast.error('Unauthorized');
     }
     return Promise.reject(error);
   }
