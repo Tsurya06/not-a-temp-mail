@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-// import { Email } from '../types';
 import { Email, Message } from '../../types/email';
+import { loadState } from '../../utils/localStorage';
 
 interface EmailState {
   emails: Email[];
@@ -10,8 +9,10 @@ interface EmailState {
   currentEmail: Email | null;
 }
 
+const savedState = loadState();
+
 const initialState: EmailState = {
-  emails: [],
+  emails: savedState?.emails || [],
   loading: false,
   error: null,
   currentEmail: null,
@@ -42,12 +43,12 @@ const emailSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     },
-    setCurrentEmail: (state, action: PayloadAction<Email>) => {
-      state.currentEmail = action.payload;
-    },
-    clearCurrentEmail: (state) => {
-      state.currentEmail = null;
-    },
+    // setCurrentEmail: (state, action: PayloadAction<Email>) => {
+    //   state.currentEmail = action.payload;
+    // },
+    // clearCurrentEmail: (state) => {
+    //   state.currentEmail = null;
+    // },
     addEmail: (state, action: PayloadAction<Email>) => {
       state.emails.unshift(action.payload);
     },
@@ -61,8 +62,8 @@ export const {
   setEmails,
   setLoading,
   setError,
-  setCurrentEmail,
-  clearCurrentEmail,
+//   setCurrentEmail,
+//   clearCurrentEmail,
   addEmail,
   deleteEmail,
 } = emailSlice.actions;

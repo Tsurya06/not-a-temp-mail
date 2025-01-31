@@ -25,7 +25,7 @@ export const useEmail = () => {
         dispatch(setError(error.message));
       }
     }
-  }, []);
+  }, [dispatch]);
 
   const createEmail = useCallback(async () => {
     try {
@@ -70,7 +70,7 @@ export const useEmail = () => {
     } finally {
       dispatch(setLoading(false));
     }
-  }, []);
+  }, [dispatch]);
 
   const removeEmail = useCallback(async (id: string, token: string) => {
     try {
@@ -84,7 +84,7 @@ export const useEmail = () => {
       dispatch(setError(errorMessage));
       throw error;
     }
-  }, []);
+  }, [dispatch]);
 
   const getMessage = useCallback(async (messageId: string, token: string) => {
     try {
@@ -98,7 +98,7 @@ export const useEmail = () => {
       dispatch(setError(errorMessage));
       throw error;
     }
-  }, []);
+  }, [dispatch]);
 
   return {
     emails,
