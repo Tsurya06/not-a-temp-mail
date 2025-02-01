@@ -9,7 +9,7 @@ This project is a temporary email management application built with React, TypeS
 Make sure you have the following installed on your machine:
 
 - Node.js (version 14 or higher)
-- npm (comes with Node.js)
+- yarn (comes with Node.js)
 
 ### Installation
 
@@ -21,22 +21,22 @@ Make sure you have the following installed on your machine:
 
 2. Install the dependencies:
    ```bash
-   npm install
+   yarn install
    ```
 
 ### Running the Project
 
 To start the development server with hot module replacement (HMR), run:
 ```bash
-npm run dev
+yarn dev
 ```
-Open your browser and navigate to `http://localhost:3000` to see the application in action.
+Open your browser and navigate to `http://localhost:5173` to see the application in action.
 
 ### Building the Project
 
 To build the project for production, run:
 ```bash
-npm run build
+yarn build
 ```
 This command will create an optimized build of your application in the `dist` folder.
 
@@ -81,4 +81,3 @@ Once the extension is loaded in your browser, you can click on its icon in the t
 For any inquiries or feedback, feel free to reach out via email: 
   [rjt0266@gmail.com](mailto:rjt0266@gmail.com).
 
-```
