@@ -57,7 +57,6 @@ export const useEmail = () => {
         token: response.token,
         createdAt: new Date().toISOString()
       };
-      console.log(emailData);
       dispatch(addEmail(emailData));
       return emailData;
     } catch (error) {

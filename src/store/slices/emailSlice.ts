@@ -56,6 +56,16 @@ const emailSlice = createSlice({
     deleteEmail: (state, action: PayloadAction<string>) => {
       state.emails = state.emails.filter(email => email.id !== action.payload);
     },
+    deleteMessage: (state, action: PayloadAction<{ emailId: string; messageId: string }>) => {
+      const { emailId, messageId } = action.payload;
+      const emailIndex = state.emails.findIndex(email => email.id === emailId);
+
+      if (emailIndex !== -1 && state.emails[emailIndex].messages) {
+        state.emails[emailIndex].messages = state.emails[emailIndex].messages?.filter(
+          message => message.id !== messageId
+        );
+      }
+    },
   },
 });
 
@@ -67,6 +77,7 @@ export const {
   clearCurrentEmail,
   addEmail,
   deleteEmail,
+  deleteMessage,
 } = emailSlice.actions;
 
 export default emailSlice;
