@@ -45,4 +45,9 @@ export const emailService = {
       Authorization: `Bearer ${token}`,
     },
   }),
+  deleteMessage: (id: string, token: string) => api.delete(`/messages/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }),
 };

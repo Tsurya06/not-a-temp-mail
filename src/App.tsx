@@ -14,7 +14,7 @@ const STORAGE_KEY = import.meta.env.VITE_STORAGE_KEY;
 export default function App() {
   const { emails, loading, fetchEmails, createEmail, removeEmail, getMessage } = useEmail();
   const dispatch = useAppDispatch();
-  const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
+  const [selectedMessage, setSelectedMessage] = useState<{ message: Message; emailId: string; token: string } | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const emailIds = useMemo(() => emails.map(email => email.id).join(','), [emails]);
@@ -45,10 +45,14 @@ export default function App() {
     }
   };
 
-  const handleMessageSelect = async (message: Message, token?: string) => {
-    if (message.id && token) {
+  const handleMessageSelect = async (message: Message, token?: string, emailId?: string) => {
+    if (message.id && token && emailId) {
       const fullMessage = await getMessage(message.id, token);
-      setSelectedMessage(fullMessage);
+      setSelectedMessage({
+        message: fullMessage,
+        emailId,
+        token
+      });
     }
   };
 
@@ -133,14 +137,16 @@ export default function App() {
               key={email.id}
               email={email}
               onDelete={() => deleteAccount(email.id)}
-              onMessageSelect={(message) => handleMessageSelect(message, email?.token)}
+              onMessageSelect={(message) => handleMessageSelect(message, email?.token, email.id)}
             />
           ))}
         </div>
 
         {selectedMessage && (
           <MessageView
-            message={selectedMessage}
+            message={selectedMessage.message}
+            emailId={selectedMessage.emailId}
+            token={selectedMessage.token}
             onClose={() => setSelectedMessage(null)}
           />
         )}
