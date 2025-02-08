@@ -22,7 +22,7 @@ export function EmailTab({
   const [showQR, setShowQR] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(email?.address || '');
+    navigator.clipboard.writeText(email?.address);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -64,7 +64,7 @@ export function EmailTab({
         onMessageSelect={(message) => onMessageSelect(message)}
       />
       {showQR && (
-        <QRModal  email={email.address || ""} onClose={() => setShowQR(false)} />
+        <QRModal  email={email.address} onClose={() => setShowQR(false)} />
       )}
       <ConfirmModal
         isOpen={isModalOpen}

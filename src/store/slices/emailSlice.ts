@@ -4,6 +4,7 @@ import { loadState } from '../../utils/localStorage';
 
 interface EmailState {
   emails: Email[];
+  previousEmails: Email[];
   loading: boolean;
   error: string | null;
   currentEmail: Email | null;
@@ -13,6 +14,7 @@ const savedState = loadState();
 
 const initialState: EmailState = {
   emails: savedState?.emails || [],
+  previousEmails: savedState?.emails || [],
   loading: false,
   error: null,
   currentEmail: null,
@@ -23,6 +25,7 @@ const emailSlice = createSlice({
   initialState,
   reducers: {
     setEmails: (state, action: PayloadAction<{ emailId: string; messages: Message[] }>) => {
+      state.previousEmails = [...state.emails];
       const { emailId, messages } = action.payload;
       const emailIndex = state.emails.findIndex(email => email.id === emailId);
 
@@ -50,13 +53,15 @@ const emailSlice = createSlice({
       state.currentEmail = null;
     },
     addEmail: (state, action: PayloadAction<Email>) => {
-        console.log("action.payload",action.payload);
+      state.previousEmails = [...state.emails];
       state.emails.unshift(action.payload);
     },
     deleteEmail: (state, action: PayloadAction<string>) => {
+      state.previousEmails = [...state.emails];
       state.emails = state.emails.filter(email => email.id !== action.payload);
     },
     deleteMessage: (state, action: PayloadAction<{ emailId: string; messageId: string }>) => {
+      state.previousEmails = [...state.emails];
       const { emailId, messageId } = action.payload;
       const emailIndex = state.emails.findIndex(email => email.id === emailId);
 
