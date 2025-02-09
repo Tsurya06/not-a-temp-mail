@@ -11,18 +11,22 @@ interface EmailTabProps {
   email: Email;
   onDelete: () => void;
   onMessageSelect: (message: Message) => void;
+  isSelected?: boolean;
+  onSelect: (email: Email) => void;
 }
 
 export function EmailTab({
   email,
   onDelete,
   onMessageSelect,
+  isSelected = false,
+  onSelect,
 }: EmailTabProps) {
   const [copied, setCopied] = useState(false);
   const [showQR, setShowQR] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(email?.address || '');
+    navigator.clipboard.writeText(email?.address);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -34,7 +38,9 @@ export function EmailTab({
     setIsModalOpen(false);
   };
   return (
-    <div className="border-b border-gray-700">
+    <div
+      className={`border-b border-gray-700 ${isSelected ? 'bg-gray-700' : ''}`}
+      onClick={() => onSelect(email)}>
       <div className="flex items-center justify-between p-2 bg-gray-800">
         <EmailDisplay
           email={email.address || ""}
@@ -64,7 +70,7 @@ export function EmailTab({
         onMessageSelect={(message) => onMessageSelect(message)}
       />
       {showQR && (
-        <QRModal  email={email.address || ""} onClose={() => setShowQR(false)} />
+        <QRModal  email={email.address} onClose={() => setShowQR(false)} />
       )}
       <ConfirmModal
         isOpen={isModalOpen}
