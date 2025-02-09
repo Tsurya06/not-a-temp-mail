@@ -1,43 +1,48 @@
 
-export type Message = {
-    id: string;
-    subject: string;
-    from: {
-      address: string;
-      name?: string;
-    };
-    to: {
-      address: string;
-      name?: string;
-    };
-    intro: string;
-    text: string;
-    html?: string;
-    createdAt: string;
-    hasAttachments: boolean;
-    address: string;
-    token: string;
-  }
-export interface Email {
-    id: string;
-    from?: string;
-    to?: string;
-    subject?: string;
-    body?: string;
-    createdAt?: string;
-    address: string;
-    token: string;
-    messages?: Message[];
-}
-
-export interface DomainResponse {
+// Common types for API responses
+interface HydraResponse<T> {
   '@context': string;
   '@id': string;
   '@type': string;
-  'hydra:member': Domain[];
+  'hydra:member': T[];
   'hydra:totalItems': number;
 }
 
+// Address type used in messages
+interface AddressInfo {
+  address: string;
+  name?: string;
+}
+
+// Message related types
+export type Message = {
+  id: string;
+  subject: string;
+  from: AddressInfo;
+  to: AddressInfo;
+  intro: string;
+  text: string;
+  html?: string;
+  createdAt: string;
+  hasAttachments: boolean;
+  address: string;
+  token: string;
+}
+
+// Email account type
+export interface Email {
+  id: string;
+  address: string;
+  token: string;
+  createdAt: string;
+  from?: string;
+  to?: string;
+  subject?: string;
+  body?: string;
+  messages?: Message[];
+}
+
+// Domain related types
 export interface Domain {
   '@id': string;
   '@type': string;
@@ -48,18 +53,6 @@ export interface Domain {
   updatedAt: string;
 }
 
-export interface MessageResponse {
-  '@context'?: string;
-  '@id'?: string;
-  '@type'?: string;
-  'hydra:member': Message[];
-  'hydra:totalItems'?: number;
-}
-
-export interface DomainResponse {
-    "@context": string;
-    "@id": string;
-    "@type": string;
-    "hydra:member": Domain[];
-    "hydra:totalItems": number;
-}
+// API Response types
+export type MessageResponse = HydraResponse<Message>;
+export type DomainResponse = HydraResponse<Domain>;
