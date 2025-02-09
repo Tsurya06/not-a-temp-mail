@@ -11,12 +11,16 @@ interface EmailTabProps {
   email: Email;
   onDelete: () => void;
   onMessageSelect: (message: Message) => void;
+  isSelected?: boolean;
+  onSelect: (email: Email) => void;
 }
 
 export function EmailTab({
   email,
   onDelete,
   onMessageSelect,
+  isSelected = false,
+  onSelect,
 }: EmailTabProps) {
   const [copied, setCopied] = useState(false);
   const [showQR, setShowQR] = useState(false);
@@ -34,7 +38,9 @@ export function EmailTab({
     setIsModalOpen(false);
   };
   return (
-    <div className="border-b border-gray-700">
+    <div
+      className={`border-b border-gray-700 ${isSelected ? 'bg-gray-700' : ''}`}
+      onClick={() => onSelect(email)}>
       <div className="flex items-center justify-between p-2 bg-gray-800">
         <EmailDisplay
           email={email.address || ""}

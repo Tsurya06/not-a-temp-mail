@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { emailService } from '../services/emailService';
 
-import { addEmail, deleteEmail, setEmails, setError, setLoading } from '../store/slices/emailSlice';
+import { addEmail, deleteEmail, setEmails, setError, setLoading, setCurrentEmail, clearCurrentEmail } from '../store/slices/emailSlice';
 import { useAppDispatch, useAppSelector } from '../store/store';
 import { Email } from '../types/email';
 
@@ -96,6 +96,14 @@ export const useEmail = () => {
     }
   }, [dispatch]);
 
+  const selectEmail = useCallback((email: Email | null) => {
+    if (email) {
+      dispatch(setCurrentEmail(email));
+    } else {
+      dispatch(clearCurrentEmail());
+    }
+  }, [dispatch]);
+
   return {
     emails,
     loading,
@@ -105,5 +113,6 @@ export const useEmail = () => {
     createEmail,
     removeEmail,
     getMessage,
+    selectEmail,
   };
 };

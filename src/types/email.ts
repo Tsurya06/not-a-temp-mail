@@ -26,7 +26,7 @@ export interface Email {
     body?: string;
     createdAt?: string;
     address: string;
-    token?: string;
+    token: string;
     messages?: Message[];
 }
 

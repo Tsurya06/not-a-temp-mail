@@ -6,35 +6,16 @@ import { MessageView } from "./components/MessageView";
 import { toast, ToastContainer } from "react-toastify";
 import { useEmail } from "./hooks/useEmail";
 import { Message } from "./types/email";
-import { deleteEmail } from "./store/slices/emailSlice";
+import { clearCurrentEmail, deleteEmail } from "./store/slices/emailSlice";
 import { useAppDispatch } from "./store/store";
 
-const STORAGE_KEY = import.meta.env.VITE_STORAGE_KEY;
-
 export default function App() {
-  const { emails, loading, fetchEmails, createEmail, removeEmail, getMessage } = useEmail();
+  const { emails, loading, fetchEmails, createEmail, removeEmail, getMessage, currentEmail, selectEmail } = useEmail();
   const dispatch = useAppDispatch();
   const [selectedMessage, setSelectedMessage] = useState<{ message: Message; emailId: string; token: string } | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const emailIds = useMemo(() => emails.map(email => email.id).join(','), [emails]);
-
-  useEffect(() => {
-    if (!Array.isArray(emails) || emails.length === 0) return;
-
-    const fetchAllEmails = () => {
-      emails.forEach((email) => {
-        if (email.token) {
-          fetchEmails(email.id, email.token);
-        }
-      });
-    };
-
-    fetchAllEmails();
-    const interval = setInterval(fetchAllEmails, 7000);
-
-    return () => clearInterval(interval);
-  }, [fetchEmails, emailIds]);
 
   const generateEmail = async () => {
     try {
@@ -67,44 +48,39 @@ export default function App() {
   const forceDelete = async () => {
     setIsDeleting(true);
     try {
-      const emailPromises = emails.map(async (email) => {
-        try {
-          await removeEmail(email.id, email.token as string);
-          dispatch(deleteEmail(email.id));
-          return true;
-        } catch (error) {
-          console.error('Error deleting email:', error);
-          return false;
-        }
+      // Clear current email selection if any
+      dispatch(clearCurrentEmail());
+      
+      // Clear all emails from Redux store
+      emails.forEach(email => {
+        dispatch(deleteEmail(email.id));
       });
 
-      // Wait for all deletion operations to complete
-      const results = await Promise.all(emailPromises);
-
-      // Count successful deletions
-      const successCount = results.filter(result => result).length;
-
-      // Clear local storage
-      localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
-
-      // Update state
-
-
-      // Show appropriate message
-      if (successCount === emails.length) {
-        toast.success(`Successfully deleted all ${successCount} email accounts!`);
-      } else {
-        toast.warning(`Deleted ${successCount} out of ${emails.length} email accounts.`);
-      }
-
+      toast.success(`Successfully cleared all ${emails.length} email accounts!`);
     } catch (error) {
       console.error('Error in force delete:', error);
-      toast.error("Failed to clear storage and delete emails.");
+      toast.error("An unexpected error occurred while clearing emails.");
     } finally {
       setIsDeleting(false);
     }
   };
 
+  useEffect(() => {
+    if (!Array.isArray(emails) || emails.length === 0) return;
+
+    const fetchAllEmails = () => {
+      emails.forEach((email) => {
+        if (email.token) {
+          fetchEmails(email.id, email.token);
+        }
+      });
+    };
+
+    fetchAllEmails();
+    const interval = setInterval(fetchAllEmails, 7000);
+
+    return () => clearInterval(interval);
+  }, [fetchEmails, emailIds]);
 
   return (
     <>
@@ -138,6 +114,8 @@ export default function App() {
               email={email}
               onDelete={() => deleteAccount(email.id)}
               onMessageSelect={(message) => handleMessageSelect(message, email?.token, email.id)}
+              isSelected={currentEmail?.id === email.id}
+              onSelect={selectEmail}
             />
           ))}
         </div>
