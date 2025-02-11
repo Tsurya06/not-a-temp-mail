@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-  workflow_dispatch:
 
 permissions:
   contents: write
@@ -12,34 +11,26 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
           node-version: '18'
-          cache: 'yarn'
 
       - name: Install Dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: Type Check
-        run: yarn tsc --noEmit
+        run: npm install
 
       - name: Build
-        run: yarn build
+        run: npm run build
         env:
           VITE_BASE_URL: https://api.mail.gw
 
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4.5.0
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
           folder: dist
           clean: true
-          clean-exclude: |
-            .nojekyll
-            CNAME
