@@ -12,6 +12,19 @@ export const useEmail = () => {
   const error = useAppSelector((state) => state.email.error);
   const currentEmail = useAppSelector((state) => state.email.currentEmail);
 
+  // Remove emails older than 9 days
+  const cleanupOldEmails = useCallback(() => {
+    const ninesDaysAgo = new Date();
+    ninesDaysAgo.setDate(ninesDaysAgo.getDate() - 9);
+
+    emails.forEach(email => {
+      const emailDate = new Date(email.createdAt);
+      if (emailDate <= ninesDaysAgo) {
+        dispatch(deleteEmail(email.id));
+      }
+    });
+  }, [dispatch, emails]);
+
   const fetchEmails = useCallback(async (emailId: string, token: string) => {
     if (!token) return;
 
@@ -114,5 +127,6 @@ export const useEmail = () => {
     removeEmail,
     getMessage,
     selectEmail,
+    cleanupOldEmails,
   };
 };

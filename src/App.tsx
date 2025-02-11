@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import {  Trash2 } from "lucide-react";
 import { EmailTab } from "./components/EmailTab";
 import { Header } from "./components/Header";
@@ -10,12 +10,10 @@ import { clearCurrentEmail, deleteEmail } from "./store/slices/emailSlice";
 import { useAppDispatch } from "./store/store";
 
 export default function App() {
-  const { emails, loading, fetchEmails, createEmail, removeEmail, getMessage, currentEmail, selectEmail } = useEmail();
+  const { emails, loading, fetchEmails, createEmail, removeEmail, getMessage, currentEmail, selectEmail, cleanupOldEmails } = useEmail();
   const dispatch = useAppDispatch();
   const [selectedMessage, setSelectedMessage] = useState<{ message: Message; emailId: string; token: string } | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
-
-  const emailIds = useMemo(() => emails.map(email => email.id).join(','), [emails]);
 
   const generateEmail = async () => {
     try {
@@ -66,21 +64,37 @@ export default function App() {
   };
 
   useEffect(() => {
-    if (!Array.isArray(emails) || emails.length === 0) return;
+    let isActive = true; // Flag to track if component is mounted
 
     const fetchAllEmails = () => {
+      if (!Array.isArray(emails) || emails.length === 0) return;
+
       emails.forEach((email) => {
-        if (email.token) {
+        if (email.token && isActive) {
           fetchEmails(email.id, email.token);
         }
       });
     };
 
-    fetchAllEmails();
-    const interval = setInterval(fetchAllEmails, 7000);
+    // Only set up intervals, don't call immediately
+    const fetchInterval = setInterval(() => {
+      if (isActive) {
+        fetchAllEmails();
+      }
+    }, 7000);
 
-    return () => clearInterval(interval);
-  }, [fetchEmails, emailIds]);
+    const cleanupInterval = setInterval(() => {
+      if (isActive) {
+        cleanupOldEmails();
+      }
+    }, 60000);
+
+    return () => {
+      isActive = false; // Mark component as unmounted
+      clearInterval(fetchInterval);
+      clearInterval(cleanupInterval);
+    };
+  }, [fetchEmails, cleanupOldEmails]);
 
   return (
     <>
