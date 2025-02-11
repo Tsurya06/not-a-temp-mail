@@ -1,11 +1,9 @@
 import { Email } from '../types/email';
 
 const STORAGE_KEY = import.meta.env.VITE_STORAGE_KEY;
-const STORAGE_VERSION = '1'; // Add version for future migrations
 
 export interface LocalStorageState {
   emails: Email[];
-  version?: string;
 }
 
 const isValidState = (state: any): state is LocalStorageState => {
@@ -36,12 +34,6 @@ export const loadState = (): LocalStorageState | undefined => {
       return undefined;
     }
 
-    // Handle version migrations here if needed
-    if (parsedState.version !== STORAGE_VERSION) {
-      // Implement migration logic if needed
-      parsedState.version = STORAGE_VERSION;
-    }
-
     return parsedState;
   } catch (err) {
     console.error('Failed to load state from localStorage:', err);
@@ -60,21 +52,23 @@ const debounce = (func: Function, wait: number) => {
 };
 
 export const saveState = debounce((state: LocalStorageState) => {
-  try {
-    const stateToSave = {
-      ...state,
-      version: STORAGE_VERSION
-    };
+  const attemptSave = () => {
+    const stateToSave = { ...state };
     const serializedState = JSON.stringify(stateToSave);
     localStorage.setItem(STORAGE_KEY, serializedState);
+  };
+
+  try {
+    attemptSave();
   } catch (err) {
     console.error('Failed to save state to localStorage:', err);
-    // Optionally, we could try to clear localStorage and retry
+    // Clear localStorage and retry once
     try {
       localStorage.removeItem(STORAGE_KEY);
-      console.info('Cleared localStorage due to save error');
-    } catch (clearErr) {
-      console.error('Failed to clear localStorage:', clearErr);
+      console.info('Cleared localStorage due to save error, retrying...');
+      attemptSave(); // Retry saving after clearing
+    } catch (retryErr) {
+      console.error('Failed to save state even after clearing localStorage:', retryErr);
     }
   }
 }, 1000); // Debounce saves to once per second
