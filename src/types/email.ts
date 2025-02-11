@@ -1,11 +1,7 @@
 
 // Common types for API responses
 interface HydraResponse<T> {
-  '@context': string;
-  '@id': string;
-  '@type': string;
   'hydra:member': T[];
-  'hydra:totalItems': number;
 }
 
 // Address type used in messages
@@ -24,9 +20,6 @@ export type Message = {
   text: string;
   html?: string;
   createdAt: string;
-  hasAttachments: boolean;
-  address: string;
-  token: string;
 }
 
 // Email account type
@@ -35,17 +28,11 @@ export interface Email {
   address: string;
   token: string;
   createdAt: string;
-  from?: string;
-  to?: string;
-  subject?: string;
-  body?: string;
   messages?: Message[];
 }
 
 // Domain related types
 export interface Domain {
-  '@id': string;
-  '@type': string;
   id: string;
   domain: string;
   isActive: boolean;
