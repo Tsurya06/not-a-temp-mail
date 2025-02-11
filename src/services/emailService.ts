@@ -1,4 +1,4 @@
-import { api } from '../api/axios.config';
+import { api } from '../api-config/axios.config';
 import { DomainResponse, Email, Message, MessageResponse } from '../types/email';
 
 export const emailService = {
