@@ -33,6 +33,7 @@ jobs:
         run: yarn build
         env:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_STORAGE_KEY: ${{ secrets.VITE_STORAGE_KEY }}
           BASE_URL: /not-a-temp-mail/
 
       - name: Deploy to GitHub Pages
