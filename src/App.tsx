@@ -45,22 +45,25 @@ export default function App() {
   };
   const forceDelete = async () => {
     setIsDeleting(true);
-    try {
-      // Clear current email selection if any
-      dispatch(clearCurrentEmail());
-      
-      // Clear all emails from Redux store
-      emails.forEach(email => {
-        dispatch(deleteEmail(email.id));
-      });
+    setTimeout(async () => {
+      try {
+        // Clear current email selection if any
+        dispatch(clearCurrentEmail());
+        
+        // Clear all emails from Redux store
+        emails.forEach(email => {
+          dispatch(deleteEmail(email.id));
+        });
 
-      toast.success(`Successfully cleared all ${emails.length} email accounts!`);
-    } catch (error) {
-      console.error('Error in force delete:', error);
-      toast.error("An unexpected error occurred while clearing emails.");
-    } finally {
-      setIsDeleting(false);
-    }
+        toast.success(`Successfully cleared all ${emails.length} email accounts!`);
+      } catch (error) {
+        console.error('Error in force delete:', error);
+        toast.error("An unexpected error occurred while clearing emails.");
+      } finally {
+        
+          setIsDeleting(false); 
+      }
+    }, 200);
   };
 
   useEffect(() => {
