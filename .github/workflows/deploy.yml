@@ -32,7 +32,8 @@ jobs:
       - name: Build
         run: yarn build
         env:
-          VITE_BASE_URL: https://api.mail.gw
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_BASE_URL: /not-a-temp-mail/
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.5.0
