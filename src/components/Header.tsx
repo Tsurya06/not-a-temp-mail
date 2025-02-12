@@ -1,6 +1,6 @@
 import { Mail, RefreshCw } from "lucide-react";
 
-interface HeaderProps {
+type HeaderProps= {
   onGenerateEmail: () => void;
   loading: boolean;
 }

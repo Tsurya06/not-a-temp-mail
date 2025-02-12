@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Email, Message } from '../../types/email';
 import { loadState } from '../../utils/localStorage';
 
-interface EmailState {
+type EmailState= {
   emails: Email[];
   previousEmails: Email[];
   loading: boolean;

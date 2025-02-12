@@ -1,6 +1,6 @@
 import { Copy, CheckCircle } from 'lucide-react';
 
-interface EmailDisplayProps {
+type EmailDisplayProps= {
   email: string;
   onCopy: () => void;
   copied: boolean;

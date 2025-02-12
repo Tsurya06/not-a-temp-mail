@@ -1,6 +1,6 @@
 import { X } from "lucide-react";
 
-interface QRModalProps {
+type QRModalProps= {
   email: string;
   onClose: () => void;
 }

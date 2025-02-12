@@ -6,7 +6,7 @@ import { deleteMessage } from "../store/slices/emailSlice";
 import { toast } from "react-toastify";
 import { useState } from "react";
 
-interface MessageViewProps {
+type MessageViewProps= {
   message: Message;
   onClose: () => void;
   emailId: string;
