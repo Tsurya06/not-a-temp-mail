@@ -32,9 +32,10 @@ jobs:
       - name: Build
         run: yarn build
         env:
+          NODE_ENV: production
           VITE_BASE_URL: ${{ secrets.VITE_BASE_URL }}
           VITE_STORAGE_KEY: ${{ secrets.VITE_STORAGE_KEY }}
-          VITE_PUBLIC_URL: ${{ secrets.VITE_PUBLIC_URL }}
+          VITE_PUBLIC_PATH: /not-a-temp-mail/
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.5.0
