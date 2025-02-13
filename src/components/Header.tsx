@@ -20,7 +20,7 @@ export function Header({ onGenerateEmail, loading }: HeaderProps) {
       if (window.location.hostname.includes('github.io')) {
         // GitHub Pages environment
         const repoName = window.location.pathname.split('/')[1];
-        downloadUrl = `${window.location.origin}/${repoName}/dist/extension.zip`;
+        downloadUrl = `${window.location.origin}/${repoName}/extension.zip`;
       } else {
         // Local development environment
         downloadUrl = '/extension.zip';
