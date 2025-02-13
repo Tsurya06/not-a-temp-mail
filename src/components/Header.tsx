@@ -11,12 +11,25 @@ export function Header({ onGenerateEmail, loading }: HeaderProps) {
   const [showDownloadModal, setShowDownloadModal] = useState(false);
   const [downloading, setDownloading] = useState(false);
   const isGitHubPages = window.location.hostname.includes('github.io') || window.location.hostname.includes('localhost');
+
   const handleDownload = async () => {
     try {
       setDownloading(true);
-      const downloadUrl = `${window.location.origin}/extension.zip`;
+      let downloadUrl;
+
+      if (window.location.hostname.includes('github.io')) {
+        // GitHub Pages environment
+        const repoName = window.location.pathname.split('/')[1];
+        downloadUrl = `${window.location.origin}/${repoName}/extension.zip`;
+      } else {
+        // Local development environment
+        downloadUrl = '/extension.zip';
+      }
       
       const response = await fetch(downloadUrl);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       const blob = await response.blob();
       
       const link = document.createElement('a');
@@ -31,7 +44,7 @@ export function Header({ onGenerateEmail, loading }: HeaderProps) {
         document.body.removeChild(link);
         URL.revokeObjectURL(link.href);
         setDownloading(false);
-      }, 1000); // Give enough time for download to start
+      }, 1000);
       
     } catch (error) {
       console.error('Download failed:', error);
