@@ -3,10 +3,11 @@ import { Trash2, QrCode } from "lucide-react";
 import { EmailDisplay } from "./EmailDisplay";
 import { MessageList } from "./MessageList";
 import { QRModal } from "./QRModal";
+// import type { Email, Message } from "../store/types";
 import { ConfirmModal } from "./ConfirmModal";
 import { Email, Message } from "../types/email";
 
-type EmailTabProps= {
+interface EmailTabProps {
   email: Email;
   onDelete: () => void;
   onMessageSelect: (message: Message) => void;

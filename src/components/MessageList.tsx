@@ -2,7 +2,7 @@ import { Inbox } from "lucide-react";
 import {  Message, MessageResponse } from "../types/email";
 
 
-type MessageListProps= {
+interface MessageListProps {
   messages: MessageResponse['hydra:member'] | null;
   loading: boolean;
   onMessageSelect: (message: Message) => void;

@@ -1,11 +1,11 @@
 
 // Common types for API responses
-type HydraResponse<T> ={
+interface HydraResponse<T> {
   'hydra:member': T[];
 }
 
 // Address type used in messages
-type AddressInfo= {
+interface AddressInfo {
   address: string;
   name?: string;
 }
@@ -23,7 +23,7 @@ export type Message = {
 }
 
 // Email account type
-export type Email= {
+export interface Email {
   id: string;
   address: string;
   token: string;
@@ -32,7 +32,7 @@ export type Email= {
 }
 
 // Domain related types
-export type Domain= {
+export interface Domain {
   id: string;
   domain: string;
   isActive: boolean;

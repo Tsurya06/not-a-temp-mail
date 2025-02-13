@@ -2,7 +2,7 @@ import { Email } from '../types/email';
 
 const STORAGE_KEY = import.meta.env.VITE_STORAGE_KEY;
 
-export type LocalStorageState= {
+export interface LocalStorageState {
   emails: Email[];
 }
 
