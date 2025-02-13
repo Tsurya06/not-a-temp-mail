@@ -33,3 +33,6 @@ node_modules/.tmp/
 *.njsproj
 *.sln
 *.sw?
+
+# Don't ignore extension.zip in public directory
+!public/extension.zip
