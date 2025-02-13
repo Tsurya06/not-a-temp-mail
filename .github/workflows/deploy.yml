@@ -44,6 +44,3 @@ jobs:
           clean-exclude: |
             .nojekyll
             CNAME
-
-      - name: Create .nojekyll file
-        run: touch dist/.nojekyll
