@@ -11,7 +11,7 @@ export function Header({ onGenerateEmail, loading }: HeaderProps) {
   const [showDownloadModal, setShowDownloadModal] = useState(false);
   const [downloading, setDownloading] = useState(false);
   const isGitHubPages = window.location.hostname.includes('github.io') || window.location.hostname.includes('localhost');
-  
+  console.log("hostname",window.location.hostname);
   const handleDownload = async () => {
     try {
       setDownloading(true);
@@ -43,7 +43,7 @@ export function Header({ onGenerateEmail, loading }: HeaderProps) {
 
   return (
     <header className="p-4 bg-gray-800 border-b border-gray-700">
-      {isGitHubPages && (
+      {!isGitHubPages && (
         <div className="flex justify-center mb-4">
           <button
             onClick={() => setShowDownloadModal(true)}
