@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && cd dist && bestzip ../public/extension.zip * && cd .. && cpy public/extension.zip dist/ && rimraf public/extension.zip",
+    "build": "tsc && vite build && cd dist && bestzip ../extension.zip * && cd .. && cpy extension.zip dist/ && rimraf extension.zip",
     "lint": "eslint .",
     "preview": "vite preview"
   },

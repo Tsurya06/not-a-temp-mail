@@ -21,10 +21,12 @@ export function Header({ onGenerateEmail, loading }: HeaderProps) {
         // GitHub Pages environment
         const repoName = window.location.pathname.split('/')[1];
         console.log(repoName);
-        downloadUrl = `${window.location.origin}/${repoName}/public/extension.zip`;
+        // GitHub Pages serves from dist directory directly
+        downloadUrl = `${window.location.origin}/${repoName}/extension.zip`;
       } else {
         // Local development environment
-        downloadUrl = '/dist/public/extension.zip';
+        // Vite serves from the root during development
+        downloadUrl = '/extension.zip';
       }
       
       const response = await fetch(downloadUrl);
