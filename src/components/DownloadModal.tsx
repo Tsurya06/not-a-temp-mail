@@ -1,4 +1,4 @@
-import { X, Download, Loader2 } from "lucide-react";
+import { X, Download, Loader2, Chrome, Globe, Terminal } from "lucide-react";
 
 interface DownloadModalProps {
   onClose: () => void;
@@ -8,57 +8,97 @@ interface DownloadModalProps {
 
 export function DownloadModal({ onClose, onDownload, downloading }: DownloadModalProps) {
   const instructions = [
-    "1. Download and extract the extension.zip file",
-    "2. Open your browser's extension page:",
-    "   • Chrome: chrome://extensions",
-    "   • Edge: edge://extensions",
-    "   • Brave: brave://extensions",
-    "   • Opera: opera://extensions",
-    "3. Enable 'Developer mode' (usually a toggle in the top-right)",
-    "4. Click 'Load unpacked' and select the 'dist' folder from extracted files"
+    {
+      title: "Download & Extract",
+      steps: [
+        "Click the download button above",
+        "Extract the downloaded extension.zip file"
+      ],
+      icon: Download
+    },
+    {
+      title: "Open Extensions Page",
+      steps: [
+        "Open your browser's extension page:",
+        "• Chrome: chrome://extensions",
+        "• Edge: edge://extensions",
+        "• Brave: brave://extensions",
+        "• Opera: opera://extensions"
+      ],
+      icon: Globe
+    },
+    {
+      title: "Enable Developer Mode",
+      steps: [
+        "Look for 'Developer mode' toggle (usually top-right)",
+        "Enable it to allow loading unpacked extensions"
+      ],
+      icon: Terminal
+    },
+    {
+      title: "Load Extension",
+      steps: [
+        "Click 'Load unpacked' button",
+        "Select the extracted extension folder",
+        "The extension should appear in your toolbar"
+      ],
+      icon: Chrome
+    }
   ];
 
   return (
     <div className="fixed inset-0 bg-gray-900/95 flex items-center justify-center p-4 z-50">
-      <div className="bg-gray-800 rounded-lg max-w-md w-full">
-        <div className="flex justify-between items-center p-4 border-b border-gray-700">
-          <h2 className="text-lg font-semibold">Install Extension</h2>
+      <div className="bg-gray-800 rounded-lg w-[360px] max-w-full">
+        <div className="flex justify-between items-center p-3 border-b border-gray-700">
+          <h2 className="text-lg font-semibold text-white ml-2 tracking-wide">Install Extension</h2>
           <button
             onClick={onClose}
-            className="p-1 hover:bg-gray-700 rounded"
+            className="p-1.5 hover:bg-gray-700 rounded-full transition-colors mr-1"
           >
-            <X className="w-5 h-5 text-gray-400" />
+            <X className="w-4 h-4 text-gray-400" />
           </button>
         </div>
         
-        <div className="p-4">
+        <div className="p-4 px-5">
           <button
             onClick={onDownload}
             disabled={downloading}
-            className="w-full px-4 py-3 mb-6 bg-blue-500 hover:bg-blue-600 disabled:bg-blue-400 rounded-md flex items-center justify-center space-x-2 text-sm font-medium transition-colors"
+            className="w-full px-4 py-3 mb-6 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 
+                     rounded-lg flex items-center justify-center space-x-2 text-sm font-medium
+                     transition-colors shadow-lg disabled:cursor-not-allowed"
           >
             {downloading ? (
               <>
-                <Loader2 className="w-5 h-5 animate-spin" />
+                <Loader2 className="w-4 h-4 animate-spin" />
                 <span>Downloading...</span>
               </>
             ) : (
               <>
-                <Download className="w-5 h-5" />
+                <Download className="w-4 h-4" />
                 <span>Download Extension</span>
               </>
             )}
           </button>
 
-          <div className="bg-gray-700/50 rounded-md p-4">
-            <h3 className="text-sm font-medium text-gray-200 mb-3">Installation Steps:</h3>
-            <ul className="text-sm space-y-2 text-gray-300">
-              {instructions.map((instruction, index) => (
-                <li key={index} className="pl-2">
-                  {instruction}
-                </li>
+          <div className="space-y-4">
+            <h3 className="text-base font-medium text-gray-200 mb-4 mt-2 ml-1">Installation Steps:</h3>
+            <div className="grid gap-3">
+              {instructions.map((section, index) => (
+                <div key={index} className="bg-gray-700/30 rounded-lg p-3 mx-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    <section.icon className="w-4 h-4 text-blue-400" />
+                    <h4 className="text-sm font-medium text-gray-200">{section.title}</h4>
+                  </div>
+                  <ul className="space-y-1.5 text-xs text-gray-300 ml-6">
+                    {section.steps.map((step, stepIndex) => (
+                      <li key={stepIndex} className="list-disc list-outside">
+                        {step}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
         </div>
       </div>
