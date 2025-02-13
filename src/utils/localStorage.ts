@@ -12,8 +12,7 @@ const isValidState = (state: any): state is LocalStorageState => {
     Array.isArray(state.emails) &&
     state.emails.every((email: any) =>
       typeof email === 'object' &&
-      typeof email.id === 'string' &&
-      Array.isArray(email.messages)
+      typeof email.id === 'string'
     )
   );
 };
