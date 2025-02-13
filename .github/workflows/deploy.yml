@@ -32,9 +32,6 @@ jobs:
           VITE_STORAGE_KEY: ${{ secrets.VITE_STORAGE_KEY }}
           VITE_PUBLIC_PATH: ''
 
-      - name: Copy extension.zip
-        run: cp public/extension.zip dist/
-
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
