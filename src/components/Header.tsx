@@ -26,7 +26,7 @@ export function Header({ onGenerateEmail, loading }: HeaderProps) {
       } else {
         // Local development environment
         // Vite serves from the root during development
-        downloadUrl = '/extension.zip';
+        downloadUrl = '/dist/extension.zip';
       }
       
       const response = await fetch(downloadUrl);
