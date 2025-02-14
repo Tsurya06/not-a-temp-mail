@@ -1,4 +1,4 @@
-import { X, Download, Loader2, Chrome, Globe, Terminal } from "lucide-react";
+import { X, Download, Loader2, Globe, Terminal } from "lucide-react";
 
 interface DownloadModalProps {
   onClose: () => void;
@@ -20,10 +20,9 @@ export function DownloadModal({ onClose, onDownload, downloading }: DownloadModa
       title: "Open Extensions Page",
       steps: [
         "Open your browser's extension page:",
-        "• Chrome: chrome://extensions",
-        "• Edge: edge://extensions",
-        "• Brave: brave://extensions",
-        "• Opera: opera://extensions"
+        "• Chrome | Edge | Brave | Opera: chrome://extensions",
+        "• Firefox: about:addons",
+        "• Safari: Safari menu > Extensions"
       ],
       icon: Globe
     },
@@ -42,7 +41,7 @@ export function DownloadModal({ onClose, onDownload, downloading }: DownloadModa
         "Select the extracted extension folder",
         "The extension should appear in your toolbar"
       ],
-      icon: Chrome
+      icon: Globe
     }
   ];
 
